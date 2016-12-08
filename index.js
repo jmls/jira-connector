@@ -5,6 +5,8 @@ var url = require('url');
 
 // Npm packages
 var request = require('request');
+var jwt = require('atlassian-jwt');
+var extend = require('util')._extend;
 
 // Custom packages
 var applicationProperties = require('./api/application-properties');
@@ -127,6 +129,8 @@ var worklog = require('./api/worklog');
  * @param {string} [config.oauth.token] The VERIFIED token used to connect to the Jira API.  MUST be included if using
  *     OAuth.
  * @param {string} [config.oauth.token_secret] The secret for the above token.  MUST be included if using Oauth.
+ * @param {string} [config.jwt.iss] The issuer Atlassian Connect uses to identify the application making the call. MUST be included if using JWT.
+ * @param {string} [config.jwt.iss] The shared secret passed by Atlassian Connect on installation. MUST be included if using JWT.
  * @param {CookieJar} [config.cookie_jar] The CookieJar to use for every requests.
  * @param {Promise} [config.promise] Any function (constructor) compatible with Promise (bluebird, Q,...).
  *      Default - native Promise.
@@ -160,7 +164,17 @@ var JiraClient = module.exports = function (config) {
         this.oauthConfig = config.oauth;
         this.oauthConfig.signature_method = 'RSA-SHA1';
 
-    } else if (config.basic_auth) {
+    }
+    else if (config.jwt) {
+      if (!config.jwt.iss) {
+        throw new Error(errorStrings.NO_JWT_ISSUER);
+      }
+      if (!config.jwt.shared_secret) {
+        throw new Error(errorStrings.NO_JWT_SHARED_SECRET);
+      }
+      this.jwtConfig = config.jwt;
+    }
+    else if (config.basic_auth) {
         if (config.basic_auth.base64) {
             this.basic_auth = {
               base64: config.basic_auth.base64
@@ -318,6 +332,22 @@ var JiraClient = module.exports = function (config) {
     };
 
     /**
+     * Create the qsh string for JWT requests.
+     *
+     * @see https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh
+     * @method createQsh
+     * @memberOf JiraClient#
+     * @param options The options passed to the request.
+     * @returns {string} The query string hash.
+     */
+    this.createQueryStringHash = function (options) {
+      var req = extend({}, options);
+      req.query = req.qs || {};
+      var baseUrl = [this.protocol, '//' + this.host, this.port].join(':');
+      return jwt.createQueryStringHash(req, false, baseUrl);
+    }
+
+    /**
      * Make a request to the Jira API and call back with it's response.
      *
      * @method makeRequest
@@ -330,7 +360,19 @@ var JiraClient = module.exports = function (config) {
     this.makeRequest = function (options, callback, successString) {
         if (this.oauthConfig) {
             options.oauth = this.oauthConfig;
-        } else if (this.basic_auth) {
+        }
+        else if (this.jwtConfig) {
+          this.jwtPayload = {
+            'iss': this.jwtConfig.iss,
+            'iat': this.jwtConfig.iat || Math.round(Date.now()/1000),
+            'exp': this.jwtConfig.exp || Math.round(Date.now()/1000) + 3600,
+            'qsh': this.createQueryStringHash(options)
+          };
+          options.headers = {
+            Authorization: 'JWT ' + jwt.encode(this.jwtPayload, this.jwtConfig.shared_secret)
+          };
+        }
+        else if (this.basic_auth) {
             if (this.basic_auth.base64) {
               options.headers = {
                 Authorization: 'Basic ' + this.basic_auth.base64

@@ -14,6 +14,7 @@
   "author": "Caleb Brinkman <floralvikings@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "atlassian-jwt": "^0.1.1",
     "oauth": "^0.9.12",
     "request": "^2.51.0"
   },
