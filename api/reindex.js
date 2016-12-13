@@ -32,6 +32,7 @@ function ReindexClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 type: opts.type,
                 indexComments: opts.indexComments,
@@ -62,6 +63,7 @@ function ReindexClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 taskId: opts.taskId
             }

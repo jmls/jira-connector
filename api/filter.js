@@ -30,6 +30,7 @@ function FilterClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {},
             body: opts.filter
         };
@@ -154,7 +155,8 @@ function FilterClient(jiraClient) {
             uri: this.jiraClient.buildURL('/filter/defaultShareScope'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -176,6 +178,7 @@ function FilterClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: {
                 scope: opts.scope
             }
@@ -197,7 +200,8 @@ function FilterClient(jiraClient) {
             uri: this.jiraClient.buildURL('/filter/favourite'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
         return this.jiraClient.makeRequest(options, callback);
     };
@@ -245,6 +249,7 @@ function FilterClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     };

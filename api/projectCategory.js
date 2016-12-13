@@ -25,7 +25,8 @@ function ProjectCategoryClient(jiraClient) {
             uri: this.jiraClient.buildURL('/projectCategory'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function ProjectCategoryClient(jiraClient) {
             uri: this.jiraClient.buildURL('/projectCategory/' + opts.projectCategoryId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

@@ -32,6 +32,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 key: opts.userKey,
@@ -66,6 +67,7 @@ function UserClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 key: opts.userKey
@@ -92,6 +94,7 @@ function UserClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.user
         };
 
@@ -117,6 +120,7 @@ function UserClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 key: opts.userKey
@@ -156,6 +160,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 projectKeys: projectKeyString,
@@ -192,6 +197,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 project: opts.project,
@@ -227,6 +233,7 @@ function UserClient(jiraClient) {
             uri: this.jiraClient.buildURL('/user/avatar/temporary'),
             method: 'POST',
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 filename: baseName,
@@ -258,6 +265,7 @@ function UserClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             },
@@ -286,6 +294,7 @@ function UserClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             }
@@ -309,6 +318,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             }
@@ -333,6 +343,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             }
@@ -359,6 +370,7 @@ function UserClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             },
@@ -386,6 +398,7 @@ function UserClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username
             }
@@ -411,6 +424,7 @@ function UserClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 key: opts.userKey
@@ -459,6 +473,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 permissions: permissions,
@@ -490,6 +505,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 query: opts.query,
                 maxResults: opts.maxResults,
@@ -523,6 +539,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 maxResults: opts.maxResults,
@@ -556,6 +573,7 @@ function UserClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 username: opts.username,
                 issueKey: opts.issueKey,

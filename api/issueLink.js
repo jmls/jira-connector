@@ -39,6 +39,7 @@ function IssueLinkClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issueLink'),
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.issueLink
         };
 
@@ -64,7 +65,8 @@ function IssueLinkClient(jiraClient) {
             method: 'GET',
             uri: this.jiraClient.buildURL('/issueLink/' + opts.linkId),
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -90,7 +92,8 @@ function IssueLinkClient(jiraClient) {
             method: 'DELETE',
             uri: this.jiraClient.buildURL('/issueLink/' + opts.linkId),
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback, 'Issue Link Deleted');

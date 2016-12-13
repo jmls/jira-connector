@@ -25,7 +25,8 @@ function StatusCategoryClient(jiraClient) {
             uri: this.jiraClient.buildURL('/statuscategory'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function StatusCategoryClient(jiraClient) {
             uri: this.jiraClient.buildURL('/statuscategory/' + opts.statusCategoryIdOrKey),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

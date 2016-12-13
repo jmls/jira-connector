@@ -28,6 +28,7 @@ function MyPreferencesClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 key: opts.key
             }
@@ -53,6 +54,7 @@ function MyPreferencesClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 key: opts.key
             },
@@ -78,6 +80,7 @@ function MyPreferencesClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 key: opts.key
             }

@@ -37,6 +37,7 @@ function AuditingClient(jiraClient) {
             uri: this.jiraClient.buildURL('/auditing/record'),
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             method: 'GET',
             qs: {
                 offset: opts.offset,
@@ -68,6 +69,7 @@ function AuditingClient(jiraClient) {
             uri: this.jiraClient.buildURL('/auditing/record'),
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             method: 'POST',
             body: opts.audit
         };

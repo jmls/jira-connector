@@ -25,7 +25,8 @@ function ResolutionClient(jiraClient) {
             uri: this.jiraClient.buildURL('/resolution'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function ResolutionClient(jiraClient) {
             uri: this.jiraClient.buildURL('/resolution/' + opts.resolutionId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

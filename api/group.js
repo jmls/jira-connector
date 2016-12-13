@@ -29,6 +29,7 @@ function GroupClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.group
         };
 
@@ -66,6 +67,7 @@ function GroupClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: qs
         };
 
@@ -89,6 +91,7 @@ function GroupClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 groupname: opts.groupName
             },
@@ -117,6 +120,7 @@ function GroupClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 groupname: opts.groupName,
                 username: opts.userName
@@ -143,6 +147,7 @@ function GroupClient(jiraClient) {
             method: 'DELETE',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 groupname: opts.groupName,
                 swapGroup: opts.swapGroup

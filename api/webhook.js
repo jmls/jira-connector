@@ -25,7 +25,8 @@ function WebhookClient(jiraClient) {
             uri: this.jiraClient.buildWebhookURL('/webhook'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function WebhookClient(jiraClient) {
             uri: this.jiraClient.buildWebhookURL('/webhook/' + opts.webhookId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -75,7 +77,8 @@ function WebhookClient(jiraClient) {
             method: 'POST',
             json: true,
             body: opts,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -96,7 +99,8 @@ function WebhookClient(jiraClient) {
             uri: this.jiraClient.buildWebhookURL('/webhook/' + opts.webhookId),
             method: 'DELETE',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

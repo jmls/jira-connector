@@ -33,6 +33,7 @@ function GroupsClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 query: opts.query,
                 exclude: opts.exclude,

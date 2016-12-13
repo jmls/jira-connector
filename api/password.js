@@ -29,6 +29,7 @@ function PasswordClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 hasOldPassword: opts.hasOldPassword
             }

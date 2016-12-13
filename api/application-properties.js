@@ -41,6 +41,7 @@ function ApplicationPropertiesClient(jiraClient) {
             uri: this.jiraClient.buildURL('/application-properties'),
             method: 'GET',
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: qs
         };
 
@@ -64,6 +65,7 @@ function ApplicationPropertiesClient(jiraClient) {
             uri: this.jiraClient.buildURL('/application-properties'),
             method: 'GET',
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.property
         };
 

@@ -5,14 +5,12 @@ var url = require('url');
 
 // Npm packages
 var request = require('request');
-var jwt = require('atlassian-jwt');
-var extend = require('util')._extend;
+const debug = require('debug')('jira-connector:JiraClient')
 
 // Custom packages
 var applicationProperties = require('./api/application-properties');
 var attachment = require('./api/attachment');
 var auditing = require('./api/auditing');
-var auth = require('./api/auth');
 var avatar = require('./api/avatar');
 var board = require('./api/board');
 var comment = require('./api/comment');
@@ -68,7 +66,6 @@ var worklog = require('./api/worklog');
  * @property {ApplicationPropertiesClient} applicationProperties
  * @property {AttachmentClient} attachment
  * @property {AuditingClient} auditing
- * @property {AuthClient} auth
  * @property {AvatarClient} avatar
  * @property {CommentClient} comment
  * @property {ComponentClient} component
@@ -129,14 +126,13 @@ var worklog = require('./api/worklog');
  * @param {string} [config.oauth.token] The VERIFIED token used to connect to the Jira API.  MUST be included if using
  *     OAuth.
  * @param {string} [config.oauth.token_secret] The secret for the above token.  MUST be included if using Oauth.
- * @param {string} [config.jwt.iss] The issuer Atlassian Connect uses to identify the application making the call. MUST be included if using JWT.
- * @param {string} [config.jwt.iss] The shared secret passed by Atlassian Connect on installation. MUST be included if using JWT.
  * @param {CookieJar} [config.cookie_jar] The CookieJar to use for every requests.
  * @param {Promise} [config.promise] Any function (constructor) compatible with Promise (bluebird, Q,...).
  *      Default - native Promise.
  */
-
 var JiraClient = module.exports = function (config) {
+    debug("creating JiraClient");
+
     if(!config.host) {
         throw new Error(errorStrings.NO_HOST_ERROR);
     }
@@ -146,9 +142,9 @@ var JiraClient = module.exports = function (config) {
     this.port = config.port;
     this.apiVersion = 2; // TODO Add support for other versions.
     this.agileApiVersion = '1.0';
-    this.authApiVersion = '1';
     this.webhookApiVersion = '1.0';
     this.promise = config.promise || Promise;
+    this.authMode = 'basic';
 
     if (config.oauth) {
         if (!config.oauth.consumer_key) {
@@ -163,22 +159,14 @@ var JiraClient = module.exports = function (config) {
 
         this.oauthConfig = config.oauth;
         this.oauthConfig.signature_method = 'RSA-SHA1';
+        this.authMode = 'oauth';
 
-    }
-    else if (config.jwt) {
-      if (!config.jwt.iss) {
-        throw new Error(errorStrings.NO_JWT_ISSUER);
-      }
-      if (!config.jwt.shared_secret) {
-        throw new Error(errorStrings.NO_JWT_SHARED_SECRET);
-      }
-      this.jwtConfig = config.jwt;
-    }
-    else if (config.basic_auth) {
+    } else if (config.basic_auth) {
         if (config.basic_auth.base64) {
             this.basic_auth = {
               base64: config.basic_auth.base64
             }
+            this.authMode = 'basic_64';
         } else {
             if (!config.basic_auth.username) {
                 throw new Error(errorStrings.NO_USERNAME_ERROR);
@@ -190,17 +178,19 @@ var JiraClient = module.exports = function (config) {
                 user: config.basic_auth.username,
                 pass: config.basic_auth.password
             };
+
+            this.authMode = 'basic';
         }
     }
 
     if (config.cookie_jar) {
         this.cookie_jar = config.cookie_jar;
+        this.authMode = 'cookie';
     }
 
     this.applicationProperties = new applicationProperties(this);
     this.attachment = new attachment(this);
     this.auditing = new auditing(this);
-    this.auth = new auth(this);
     this.avatar = new avatar(this);
     this.board = new board(this);
     this.comment = new comment(this);
@@ -290,27 +280,6 @@ var JiraClient = module.exports = function (config) {
     };
 
     /**
-     * Simple utility to build a REST endpoint URL for the Jira Auth API.
-     *
-     * @method buildAuthURL
-     * @memberOf JiraClient#
-     * @param path The path of the URL without concern for the root of the REST API.
-     * @returns {string} The constructed URL.
-     */
-    this.buildAuthURL = function (path) {
-        var apiBasePath = this.path_prefix + 'rest/auth/';
-        var version = this.authApiVersion;
-        var requestUrl = url.format({
-            protocol: this.protocol,
-            hostname: this.host,
-            port: this.port,
-            pathname: apiBasePath + version + path
-        });
-
-        return decodeURIComponent(requestUrl);
-    };
-
-    /**
      * Simple utility to build a REST endpoint URL for the Jira webhook API.
      *
      * @method buildWebhookURL
@@ -332,20 +301,27 @@ var JiraClient = module.exports = function (config) {
     };
 
     /**
-     * Create the qsh string for JWT requests.
+     * Simple utility to "fix" a call that used to pass the body as the first parameter instead of options
      *
-     * @see https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh
-     * @method createQsh
+     * @method parseOptions
      * @memberOf JiraClient#
-     * @param options The options passed to the request.
-     * @returns {string} The query string hash.
+     * @param {Object} options The options to parse
+     * @returns {Object} options split into body and suppliedOptions
      */
-    this.createQueryStringHash = function (options) {
-      var req = extend({}, options);
-      req.query = req.qs || {};
-      var baseUrl = [this.protocol, '//' + this.host, this.port].join(':');
-      return jwt.createQueryStringHash(req, false, baseUrl);
-    }
+     this.parseOptions = (options) => {
+        let result = {};
+
+        if (options.data) {
+            result.body = options.data;
+            result.suppliedOptions = options;
+            delete options.data;
+        } else {
+            result.body = options;
+            result.suppliedOptions = null;
+        }
+
+        return result;
+     };
 
     /**
      * Make a request to the Jira API and call back with it's response.
@@ -358,31 +334,44 @@ var JiraClient = module.exports = function (config) {
      * @return {Promise} Resolved with APIs response or rejected with error
      */
     this.makeRequest = function (options, callback, successString) {
-        if (this.oauthConfig) {
-            options.oauth = this.oauthConfig;
+
+        let methodOpts = options.suppliedOptions;
+
+        delete options.suppliedOptions;
+
+        if (!methodOpts) {
+            debug("methodOpts is undefined, using initial auth options");
+            methodOpts = {};
         }
-        else if (this.jwtConfig) {
-          this.jwtPayload = {
-            'iss': this.jwtConfig.iss,
-            'iat': this.jwtConfig.iat || Math.round(Date.now()/1000),
-            'exp': this.jwtConfig.exp || Math.round(Date.now()/1000) + 3600,
-            'qsh': this.createQueryStringHash(options)
-          };
-          options.headers = {
-            Authorization: 'JWT ' + jwt.encode(this.jwtPayload, this.jwtConfig.shared_secret)
-          };
-        }
-        else if (this.basic_auth) {
-            if (this.basic_auth.base64) {
-              options.headers = {
-                Authorization: 'Basic ' + this.basic_auth.base64
-              }
-            } else {
-              options.auth = this.basic_auth;
+
+        switch (this.authMode) {
+            case 'basic': {
+
+                options.auth = {
+                    username: methodOpts.username || this.basic_auth.username,
+                    password: methodOpts.password || this.basic_auth.password
+                }
+
+                break;
             }
-        }
-        if (this.cookie_jar) {
-            options.jar = this.cookie_jar;
+
+            case 'basic_64': {
+                  options.headers = {
+                    Authorization: 'Basic ' + methodOpts.auth || this.basic_auth.base64
+                  };
+
+                break;
+            }
+
+            case 'oauth': {
+                options.oauth = methodOpts.auth || this.oauthConfig;
+                break;
+            }
+
+            case 'cookie': {
+                options.jar = methodOpts.auth.jar || this.cookie_jar;
+                break;
+            }
         }
 
         if (callback) {

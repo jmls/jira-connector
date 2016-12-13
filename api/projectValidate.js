@@ -29,6 +29,7 @@ function ProjectValidateClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 key: opts.projectKey
             }

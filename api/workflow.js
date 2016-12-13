@@ -31,6 +31,7 @@ function WorkflowClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: qs
         };
 

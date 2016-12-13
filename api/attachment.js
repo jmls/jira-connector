@@ -32,7 +32,8 @@ function AttachmentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/attachment/' + opts.attachmentId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -57,7 +58,8 @@ function AttachmentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/attachment/' + opts.attachmentId),
             method: 'DELETE',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback, 'Attachment Deleted');
@@ -79,7 +81,8 @@ function AttachmentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/attachment/meta'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

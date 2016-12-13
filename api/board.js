@@ -33,6 +33,7 @@ function AgileBoardClient(jiraClient) {
       method: 'GET',
       json: true,
       followAllRedirects: true,
+			suppliedOptions: opts,
       qs: {
         type: opts.type,
         startAt: opts.startAt,
@@ -59,6 +60,7 @@ function AgileBoardClient(jiraClient) {
       method: 'GET',
       json: true,
       followAllRedirects: true,
+			suppliedOptions: opts,
       qs: {
         filter: opts.filter,
         startAt: opts.startAt,
@@ -93,6 +95,7 @@ function AgileBoardClient(jiraClient) {
       method: 'GET',
       json: true,
       followAllRedirects: true,
+			suppliedOptions: opts,
       qs: {
         startAt: opts.startAt,
         maxResults: opts.maxResults

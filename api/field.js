@@ -25,7 +25,8 @@ function FieldClient(jiraClient) {
             uri: this.jiraClient.buildURL('/field'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -47,6 +48,7 @@ function FieldClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.field
         };
 

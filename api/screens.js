@@ -195,7 +195,8 @@ function ScreensClient(jiraClient) {
             uri: this.jiraClient.buildURL('/screens/addToDefault/' + opts.fieldId),
             method: 'POST',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -244,6 +245,7 @@ function ScreensClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     };

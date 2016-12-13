@@ -26,6 +26,7 @@ function LicenseValidatorClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.license
         };
 

@@ -27,7 +27,8 @@ function IssueLinkTypeClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issueLinkType'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -49,6 +50,7 @@ function IssueLinkTypeClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.linkType
         };
 
@@ -74,7 +76,8 @@ function IssueLinkTypeClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issueLinkType/' + opts.issueLinkTypeId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -99,7 +102,8 @@ function IssueLinkTypeClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issueLinkType/' + opts.issueLinkTypeId),
             method: 'DELETE',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback, 'IssueLink type deleted.');
@@ -126,6 +130,7 @@ function IssueLinkTypeClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.issueLinkType
         };
 

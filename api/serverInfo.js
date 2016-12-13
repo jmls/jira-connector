@@ -26,6 +26,7 @@ function ServerInfoClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 doHealthCheck: opts.doHealthCheck
             }

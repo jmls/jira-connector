@@ -27,6 +27,7 @@ function WorkflowSchemeClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.workflowScheme
         };
         return this.jiraClient.makeRequest(options, callback);
@@ -514,6 +515,7 @@ function WorkflowSchemeClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     };

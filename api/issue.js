@@ -37,6 +37,7 @@ function IssueClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 boardId: opts.boardId,
                 filter: opts.filter,
@@ -72,6 +73,7 @@ function IssueClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: {
                 value: opts.value,
                 filter: opts.filter,
@@ -91,18 +93,22 @@ function IssueClient(jiraClient) {
      *
      * @method setIssueRanks
      * @memberOf IssueClient#
-     * @param {Object} ranking The ranking data in the form of PUT body to the
+     * @param {Object} opts The options for the API request.
+     * @param {Object} opts.data The ranking data in the form of PUT body to the
      *        Jira API.
      * @param [callback] Called when the issue rank has been created.
      * @return {Promise} Resolved when the issue rank has been created.
      */
-    this.setIssueRanks = function (ranking, callback) {
+    this.setIssueRanks = function (opts, callback) {
+        let result = this.jiraClient.parseOptions(opts);
+
         var options = {
             uri: this.jiraClient.buildAgileURL('/issue/rank'),
             method: 'PUT',
             json: true,
             followAllRedirects: true,
-            body: ranking
+			suppliedOptions: result.suppliedOptions,
+            body: result.body
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -123,18 +129,22 @@ function IssueClient(jiraClient) {
      *
      * @method createIssue
      * @memberof IssueClient#
-     * @param {Object} issue The issue data in the form of POST body to the JIRA API.
+     * @param {Object} opts The options for the API request.
+     * @param {Object} opts.data The issue data in the form of POST body to the JIRA API.
      * See {@link https://docs.atlassian.com/jira/REST/latest/#d2e398}
      * @param [callback] Called when the issue has been created.
      * @return {Promise} Resolved when the issue has been created.
      */
-    this.createIssue = function (issue, callback) {
+    this.createIssue = function (opts, callback) {
+        let result = this.jiraClient.parseOptions(opts);
+
         var options = {
             uri: this.jiraClient.buildURL('/issue'),
             method: 'POST',
             followAllRedirects: true,
             json: true,
-            body: issue
+			suppliedOptions: result.suppliedOptions,
+            body: result.body
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -178,6 +188,7 @@ function IssueClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issue/createmeta'),
             method: 'GET',
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true,
             qs: {
                 projectIds: opts.projectIds,
@@ -201,17 +212,21 @@ function IssueClient(jiraClient) {
      *
      * @method bulkCreate
      * @memberof IssueClient#
-     * @param issues See {@link https://docs.atlassian.com/jira/REST/latest/#d2e828}
+     * @param {Object} opts The options to pass to the API.
+     * @param {Array} opts.data issues See {@link https://docs.atlassian.com/jira/REST/latest/#d2e828}
      * @param [callback] Called when the issues have been created.
      * @return {Promise} Resolved when the issues have been created.
      */
-    this.bulkCreate = function (issues, callback) {
+    this.bulkCreate = function (opts, callback) {
+        let result = this.jiraClient.parseOptions(opts);
+
         var options = {
             uri: this.jiraClient.buildURL('/issue/bulk'),
             method: 'POST',
             followAllRedirects: true,
             json: true,
-            body: issues
+            suppliedOptions: result.suppliedOptions,
+            body: result.body
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -266,6 +281,7 @@ function IssueClient(jiraClient) {
                 method: 'GET',
                 json: true,
                 followAllRedirects: true,
+			suppliedOptions: opts,
                 qs: {
                     filter: opts.filter,
                     startAt: opts.startAt,
@@ -1163,6 +1179,7 @@ function IssueClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     }

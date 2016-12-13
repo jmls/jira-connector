@@ -46,17 +46,21 @@ function ProjectClient(jiraClient) {
      *
      * @method createProject
      * @memberOf ProjectClient#
-     * @param project The project properties. See {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project}
+     * @param opts The request options sent to the Jira API.
+     * @param opts.data The project properties. See {@link https://docs.atlassian.com/jira/REST/latest/#api/2/project}
      * @param [callback] Called when the project has been created.
      * @return {Promise} Resolved when the project has been created.
      */
-    this.createProject = function (project, callback) {
+    this.createProject = function (opts, callback) {
+        let result = this.jiraClient.parseOptions(opts);
+
         var options = {
             uri: this.jiraClient.buildURL('/project'),
             method: 'POST',
             followAllRedirects: true,
             json: true,
-            body: project
+			suppliedOptions: result.suppliedOptions,
+            body: result.body
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -253,6 +257,7 @@ function ProjectClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     };

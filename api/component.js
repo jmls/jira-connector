@@ -27,6 +27,7 @@ function ComponentClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.component
         };
 
@@ -53,6 +54,7 @@ function ComponentClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.component
         };
 
@@ -74,7 +76,8 @@ function ComponentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/component/' + opts.id),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -97,7 +100,8 @@ function ComponentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/component/' + opts.id),
             method: 'DELETE',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback, 'Project Component Deleted');
@@ -118,7 +122,8 @@ function ComponentClient(jiraClient) {
             uri: this.jiraClient.buildURL('/component/' + opts.id + '/relatedIssueCounts'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

@@ -25,7 +25,8 @@ function MyselfClient(jiraClient) {
             uri: this.jiraClient.buildURL('/myself'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -48,6 +49,7 @@ function MyselfClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.newData
         };
 
@@ -70,6 +72,7 @@ function MyselfClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.newData
         };
 

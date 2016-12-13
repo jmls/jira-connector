@@ -26,6 +26,7 @@ function SettingsClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.newUrl
         };
 
@@ -46,7 +47,8 @@ function SettingsClient(jiraClient) {
             uri: this.jiraClient.buildURL('/settings/columns'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

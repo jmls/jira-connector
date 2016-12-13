@@ -25,7 +25,8 @@ function JqlClient(jiraClient) {
             uri: this.jiraClient.buildURL('/jql/autocompletedata'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback)

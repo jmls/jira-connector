@@ -24,7 +24,8 @@ function LicenseRoleClient(jiraClient) {
             uri: this.jiraClient.buildURL('/licenserole'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -45,7 +46,8 @@ function LicenseRoleClient(jiraClient) {
             uri: this.jiraClient.buildURL('/licenserole/' + opts.roleId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -70,6 +72,7 @@ function LicenseRoleClient(jiraClient) {
             method: 'PUT',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.role
         };
 

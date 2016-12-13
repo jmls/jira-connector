@@ -19,15 +19,23 @@ function AuthClient(jiraClient) {
      *
      * @method logout
      * @memberOf Auth#
+     * @param opts The request options sent to the Jira API
      * @param [callback] Called when the user has been logged out.
      * @return {Promise} Resolved when the user has been logged out.
      */
-    this.logout = function (callback) {
+    this.logout = function (opts,callback) {
+
+        if (!callback) {
+            callback = opts;
+            opts = null;
+        }
+
         var options = {
             uri: this.jiraClient.buildAuthURL('/session'),
             method: 'DELETE',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback), 'User logged out.';
@@ -50,6 +58,7 @@ function AuthClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts
         };
 
@@ -61,15 +70,23 @@ function AuthClient(jiraClient) {
      *
      * @method currentUser
      * @memberOf Auth#
+     * @param opts The request options sent to the Jira API
      * @param [callback] Called when the current user has been retrieved.
      * @return {Promise} Resolved when the user has been retrieved.
      */
-    this.currentUser = function (callback) {
+    this.currentUser = function (opts,callback) {
+
+        if (!callback) {
+            callback = opts;
+            opts = null;
+        }
+
         var options = {
             uri: this.jiraClient.buildURL('/session'),
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
         };
 
         return this.jiraClient.makeRequest(options, callback);

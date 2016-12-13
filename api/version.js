@@ -26,6 +26,7 @@ function VersionClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: opts.version
         };
 
@@ -223,6 +224,7 @@ function VersionClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {globalId: opts.globalId}
         };
         return this.jiraClient.makeRequest(options, callback);
@@ -271,6 +273,7 @@ function VersionClient(jiraClient) {
             body: body,
             qs: qs,
             followAllRedirects: true,
+			suppliedOptions: opts,
             json: true
         };
     };

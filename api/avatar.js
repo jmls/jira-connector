@@ -32,6 +32,7 @@ function AvatarClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             uri: this.jiraClient.buildURL('/avatar/' + opts.avatarType + '/system')
         };
 
@@ -62,6 +63,7 @@ function AvatarClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             uri: this.jiraClient.buildURL('/avatar/' + opts.avatarType + '/temporary'),
             headers: {
                 "X-Atlassian-Token": "no-check"
@@ -100,6 +102,7 @@ function AvatarClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             uri: this.jiraClient.buildURL('/avatar/' + opts.avatarType + '/temporaryCrop'),
             headers: {
                 "X-Atlassian-Token": "no-check"

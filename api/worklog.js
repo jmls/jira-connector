@@ -29,6 +29,7 @@ function WorklogClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 since: opts.since
             }
@@ -53,6 +54,7 @@ function WorklogClient(jiraClient) {
             method: 'POST',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             body: {
                 ids: opts.ids
             }
@@ -78,6 +80,7 @@ function WorklogClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 since: opts.since
             }

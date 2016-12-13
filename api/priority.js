@@ -25,7 +25,8 @@ function PriorityClient(jiraClient) {
             uri: this.jiraClient.buildURL('/priority'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function PriorityClient(jiraClient) {
             uri: this.jiraClient.buildURL('/priority/' + opts.priorityId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

@@ -35,6 +35,7 @@ function DashboardClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 filter: opts.filter,
                 startAt: opts.startAt,
@@ -61,6 +62,7 @@ function DashboardClient(jiraClient) {
             method: 'GET',
             json: true,
             followAllRedirects: true,
+			suppliedOptions: opts,
             qs: {
                 filter: opts.filter,
                 startAt: opts.startAt,

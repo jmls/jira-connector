@@ -32,7 +32,8 @@ function CustomFieldOptionClient(jiraClient) {
             uri: this.jiraClient.buildURL('/customFieldOption/' + opts.fieldOptionId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

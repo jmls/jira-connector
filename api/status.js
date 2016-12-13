@@ -25,7 +25,8 @@ function StatusClient(jiraClient) {
             uri: this.jiraClient.buildURL('/status'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function StatusClient(jiraClient) {
             uri: this.jiraClient.buildURL('/status/' + opts.statusId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

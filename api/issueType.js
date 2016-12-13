@@ -25,7 +25,8 @@ function IssueTypeClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issuetype'),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);
@@ -46,7 +47,8 @@ function IssueTypeClient(jiraClient) {
             uri: this.jiraClient.buildURL('/issuetype/' + opts.issueTypeId),
             method: 'GET',
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
         };
 
         return this.jiraClient.makeRequest(options, callback);

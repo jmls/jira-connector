@@ -57,7 +57,8 @@ function SearchClient(jiraClient) {
             uri: this.jiraClient.buildURL('/search'),
             method: opts.method, 
             json: true,
-            followAllRedirects: true
+            followAllRedirects: true,
+			suppliedOptions: opts
 
         };
 
