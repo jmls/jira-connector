@@ -193,6 +193,7 @@ var JiraClient = module.exports = function (config) {
     this.applicationProperties = new applicationProperties(this);
     this.attachment = new attachment(this);
     this.auditing = new auditing(this);
+    this.auth = new auth(this);
     this.avatar = new avatar(this);
     this.board = new board(this);
     this.comment = new comment(this);
