@@ -11,6 +11,7 @@ const debug = require('debug')('jira-connector:JiraClient')
 var applicationProperties = require('./api/application-properties');
 var attachment = require('./api/attachment');
 var auditing = require('./api/auditing');
+var auth = require('./api/auth');
 var avatar = require('./api/avatar');
 var board = require('./api/board');
 var comment = require('./api/comment');
@@ -66,6 +67,7 @@ var worklog = require('./api/worklog');
  * @property {ApplicationPropertiesClient} applicationProperties
  * @property {AttachmentClient} attachment
  * @property {AuditingClient} auditing
+ * @property {AuthClient} auth
  * @property {AvatarClient} avatar
  * @property {CommentClient} comment
  * @property {ComponentClient} component
@@ -347,10 +349,7 @@ var JiraClient = module.exports = function (config) {
         switch (this.authMode) {
             case 'basic': {
 
-                options.auth = {
-                    username: methodOpts.username || this.basic_auth.username,
-                    password: methodOpts.password || this.basic_auth.password
-                }
+                options.auth = methodOpts.auth || this.basic_auth;
 
                 break;
             }
