@@ -71,7 +71,7 @@ function AgileSprintClient(jiraClient) {
    * @param {object} opts The request options sent to the Jira API.
    * @param {Object} opts.data The sprint data in the form of PUT body to the
    *   Jira API.
-   * @param {string} [sprint.sprintId] The id of the sprint.  EX: 331
+   * @param {string} [opts.data.sprintId] The id of the sprint.  EX: 331
    * @param [callback] Called when the sprint has been updated.
    * @return {Promise} Resolved when the sprint has been updated.
    */
