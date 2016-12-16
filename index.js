@@ -403,66 +403,18 @@ var JiraClient = module.exports = function (config) {
             }
         }
 
-        if (callback) {
+        return new Promise((resolve,reject) => {
+
             requestLib(options, function (err, response, body) {
-                if (err || response.statusCode.toString()[0] != 2) {
-                    return callback(err ? err : body, null, response);
+                let result = { statusCode: response.statusCode, data: body};
+
+                if (err) {
+                    return callback ? callback(err,result) : reject(result);
                 }
 
-            if (typeof body == 'string') {
-                try {
-                    body = JSON.parse(body);
-                } catch (jsonErr) {
-                    return callback(jsonErr, null, response);
-                }
-            }
-
-                return callback(null, successString ? successString : body, response);
+                return callback ? callback(null,result) : resolve(result);
             });
-        } else if (this.promise) {
-            return new this.promise(function (resolve, reject) {
-
-                var req = requestLib(options);
-
-                req.on('response', function(response) {
-
-                    // Saving error
-                    var error = response.statusCode.toString()[0] !== '2';
-
-                    // Collecting data
-                    var body = [];
-                    var push = body.push.bind(body);
-                    response.on('data', push);
-
-                    // Data collected
-                    response.on('end', function () {
-
-                        var result = body.join('');
-
-                        // Parsing JSON
-                        if (result[0] === '[' || result[0] === '{') {
-                            try {
-                                result = JSON.parse(result);
-                            } catch(e) {
-                                // nothing to do
-                            }
-                        }
-
-                        if (error) {
-                            response.body = result;
-                            reject(JSON.stringify(response));
-                            return;
-                        }
-
-                        resolve(result);
-                    });
-
-                });
-
-                req.on('error', reject);
-
-            });
-        }
+        });
 
     };
 
