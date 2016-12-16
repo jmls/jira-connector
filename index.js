@@ -149,12 +149,8 @@ var JiraClient = module.exports = function (config) {
     this.authApiVersion = '1';
     this.webhookApiVersion = '1.0';
     this.promise = config.promise || Promise;
-<<<<<<< HEAD
     this.authMode = 'basic';
-    this.request = config.request || request;
-=======
     this.requestLib = config.request || request;
->>>>>>> custom_request
 
     if (config.oauth) {
         if (!config.oauth.consumer_key) {
