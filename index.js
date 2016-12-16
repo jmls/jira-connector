@@ -402,12 +402,16 @@ var JiraClient = module.exports = function (config) {
         return new Promise((resolve,reject) => {
 
             requestLib(options, function (err, response, body) {
-                let result = { statusCode: response.statusCode, data: body};
 
                 if (err) {
-                    return callback ? callback(err,result) : reject(result);
+                    return callback ? callback(err) : reject(err);
                 }
 
+                if (response.statusCode > 299 || response.statusCode < 200) {
+                    return callback ? callback(new Error().err) : reject({statusCode: response.statusCode});
+                }
+
+                let result = {statusCode: response.statusCode, data: body};
                 return callback ? callback(null,result) : resolve(result);
             });
         });
